@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Navbar</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Dropdown
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+              </li>
+            </ul>
+            <form class="d-flex" role="search">
+              <input
+                class="form-control me-2"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+              />
+              <button class="btn btn-outline-success" type="submit">
+                Search
+              </button>
+            </form>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <div class="container mt-5 col-6">
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Chapter Name"
+            aria-label="Chapter Name"
+            aria-describedby="button-addon2"
+          />
+          <button
+          id="add-btn"
+            class="btn btn-outline-success"
+            type="button"
+            id="button-addon2"
+          >
+            Add
+          </button>
+        </div>
+        <ul id="parentList" class="list-group">
+          <li class="list-group-item d-flex justify-content-between">
+            <h3 class="flex-grow-1">Chapter 1 </h3>
+            <button class="btn btn-warning mx-2"onclick="editChapter(this)">Edit</button>
+            <button class="btn btn-danger" onclick="removeChapter(this)">Remove</button>
+          </li>
+        </ul>
+      </div>
+    </main>
+
+    <!-- Bootstrap JS Bundle (Required for navbar toggling and dropdowns) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let addbtn=document.getElementById('add-btn')
+        addbtn.addEventListener('click',addChapter)
+        let parentList=document.getElementById('parentList');
+        function addChapter(e){
+          if(parentList.children[0].className=="emptyMsg"){
+            parentList.children[0].remove()
+          }
+           let currentBtn=e.currentTarget;
+           let currentInput=currentBtn.previousElementSibling
+           let curr_chapter=currentInput.value
+           let newLi=document.createElement('li')
+          //  newLi.classList.add('list-group-item')
+          newLi.className="list-group-item d-flex justify-content-between"
+           newLi.innerHTML=`<h3 class="flex-grow-1">${curr_chapter} </h3>
+            <button class="btn btn-warning mx-2">Edit</button>
+            <button class="btn btn-danger" onclick="removeChapter(this)">Remove</button>`
+           parentList.appendChild(newLi)
+        }
+        function removeChapter(currElement){
+          currElement.parentElement.remove()
+          if(parentList.children.length<=0){
+            let newmsg=document.createElement("h3")
+            newmsg.innerHTML=`<div class="d-flex justify-content-center mt-2">
+          <h5 class="text-muted">nothing is here please add something</h5>
+        </div>`
+        newmsg.classList.add("emptyMsg")
+            newmsg.textContent="nothing is here please add something"
+            parentList.appendChild(newmsg)
+          }
+        }
+        function editChapter(currElement){
+          if(currElement.textContent=="Done"){
+             currElement.textContent="Edit"
+             let currChapt=currElement.previousElementSibling.value
+             let currHeading=document.createElement("h3");
+             currHeading.className="flex-grow-1"
+             currHeading.textContent=currChapt
+             currElement.parentElement.replaceChild(currHeading,currElement.previousElementSibling)
+          }  
+          else{
+          currElement.textContent="Done"
+           let currChapt=currElement.previousElementSibling.textContent
+           let currInput=document.createElement('input');
+           currInput.type="text"
+           currInput.placeholder="text"
+           currInput.className="form-control"
+           currInput.value=currChapt
+
+           currElement.parentElement.replaceChild(currInput,currElement.previousElementSibling)
+        }
+      }
+    </script>
+  </body>
+</html>
